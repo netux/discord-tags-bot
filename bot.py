@@ -32,6 +32,9 @@ async def on_command_error(ctx: commands.Context, err):
 	if isinstance(err, commands.MissingRequiredArgument):
 		await ctx.send(str(err))
 		return
+	elif isinstance(err, commands.CommandNotFound):
+		# ignore
+		return
 
 	traceback.print_exception(type(err), err, err.__traceback__, file=sys.stderr)
 
