@@ -1,8 +1,9 @@
+import functools
 import operator
 import sqlite3
 import sys
 import traceback
-import functools
+from typing import Optional
 
 from discord.ext import commands
 
@@ -54,13 +55,19 @@ async def tags(ctx: commands.Context):
 	await ctx.send(', '.join(map(lambda x: f'`{x[0]}`', names)))
 
 
-@bot.group()
+@bot.group(invoke_without_command=True)
 @commands.guild_only()
 async def tag(ctx: commands.Context):
-	if ctx.invoked_subcommand:
+	# little hack to get arguments without disrupting subcommands
+	# "{prefix}{invoked_with} {name}"
+	name = ctx.view.buffer[len(ctx.prefix + ctx.invoked_with) + 1:]
+	if not name:
+		# NOTE: discord.ext.commands.inspect isn't public :(
+		# param = commands.inspect.Parameter('name', commands.inspect.Parameter.POSITIONAL_ONLY)
+		# raise commands.MissingRequiredArgument(param)
+		await ctx.send('name is a required argument that is missing.')
 		return
 
-	name = ctx.subcommand_passed
 	content = None
 	with db:
 		cur = db.cursor()
