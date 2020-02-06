@@ -127,7 +127,7 @@ async def edit(ctx: commands, name: str, *, content: str):
 
 	await ctx.send(f'Tag `{name}` edited.')
 
-@tag.command(aliases=('remove'))
+@tag.command(aliases=['remove'])
 async def delete(ctx: commands, name: str):
 	user_id = None
 	with db:
