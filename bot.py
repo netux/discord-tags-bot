@@ -3,10 +3,14 @@ import operator
 import sqlite3
 import sys
 import traceback
+import configparser
 from typing import Optional
 
 from discord.ext import commands
 
+
+config = configparser.ConfigParser()
+config.read('config.ini')
 
 bot = commands.Bot(command_prefix='!', help_command=None)
 
@@ -170,12 +174,11 @@ async def delete(ctx: commands, name: str):
 
 
 if __name__ == '__main__':
-	import os
 	import sys
 
-	token = os.getenv('BOT_TOKEN')
+	token = config['BOT']['Token']
 	if not token:
-		sys.stderr.write('Missing BOT_TOKEN env var.\n')
+		sys.stderr.write('Missing Token in config.ini\n')
 		sys.exit(1)
 
 	print('Starting...')

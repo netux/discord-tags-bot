@@ -1,4 +1,4 @@
 __pycache__
-*.env
-!.example.env
+*.ini
+!config.example.ini
 *.db
